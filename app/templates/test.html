@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>练习页面</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			text-align: center;
+		}
+		h1 {
+			margin-top: 50px;
+		}
+		#content {
+			margin-top: 20px;
+		}
+		#input {
+            width: 500px;
+            height: 300px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 10px 0;
+            line-height: 1.5;
+            resize: none;
+        }
+		button {
+			width: 200px;
+			height: 40px;
+			font-size: 18px;
+			border-radius: 5px;
+			border: none;
+			color: #fff;
+			background-color: #2ecc71;
+			margin-top: 20px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+		button:disabled {
+			background-color: #ccc;
+			cursor: not-allowed;
+		}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<button id="btn-start">开始练习</button>
+		<textarea name="input" id="input" rows="10" cols="50" style="height: 200px;"></textarea>
+		<button id="btn-send" disabled>发送</button>
+	</div>
+	
+	<script>
+		var btnStart = document.getElementById('btn-start');
+		var btnSend = document.getElementById('btn-send');
+		var inputText = document.getElementById('input');
+		
+		var content = document.getElementById('content');
+
+		btnStart.onclick = function() {
+			// content.removeChild(inputText);
+			this.disabled = true;
+			// this.innerHTML = '开始练习';
+			
+			setTimeout(function() {
+				btnSend.disabled = false;
+                inputText.focus();
+				// inputText.value = btnStart.innerHTML;
+			}, 2000);
+		};
+
+		btnSend.onclick = function() {
+			this.disabled = true;
+			inputText.disabled = true;
+			btnStart.disabled = true;
+			alert('发送给后端内容：' + inputText.value);
+		};
+	</script>
+    <script>
+    
+
+
+    $(function() {
+        // 监听“开始练习”按钮点击事件
+        $("#btn-start").click(function() {
+          // 发送“开始练习”文字给后端
+          $.post("/send", { message: "开始练习" }, function(data) {
+            // 后端返回数据之后，禁用“开始练习”按钮
+            $("#btn-start").prop("disabled", true);
+            // 出现“发送”按钮，下方出现textarea
+            $("#btn-send").prop("disabled", true).show();
+            $("#input").show().focus();
+          });
+        });
+      
+        // 监听“发送”按钮点击事件
+        $("#btn-send").click(function() {
+          var message = $("#input").val();
+          // 如果textarea内部没有数据，禁用“发送”按钮
+          if ($.trim(message) === "") {
+            $(this).prop("disabled", true);
+            return;
+          }
+          // 发送textarea内部的文本给后端
+          $.post("/send", { message: message }, function(data) {
+            // 后端返回数据之后，禁用所有按钮，出现“再次练习”按钮
+            $("#btn-start").prop("disabled", true);
+            $("#btn-send").prop("disabled", true);
+            $("#input").prop("disabled", true);
+            $("<button>")
+              .text("再次练习")
+              .addClass("btn btn-primary")
+              .appendTo($("#message-area"));
+          });
+        });
+      
+        // 监听textarea的输入事件
+        $("#input").on("input", function() {
+          var message = $(this).val();
+          // 如果textarea内部有数据，激活“发送”按钮
+          if ($.trim(message) !== "") {
+            $("#btn-send").prop("disabled", false);
+          }
+        });
+      });
+    </script>
+</body>
+</html>

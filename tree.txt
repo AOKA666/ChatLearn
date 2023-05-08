@@ -1,0 +1,40 @@
+卷 DATA1 的文件夹 PATH 列表
+卷序列号为 26C8-370A
+D:.
+│  config.py
+│  requirements.txt
+│  run.py
+│  test.py
+│  tree.txt
+│  
+├─app
+│  │  routes.py
+│  │  __init__.py
+│  │  
+│  ├─api
+│  │      calculate.py
+│  │      __init__.py
+│  │      
+│  ├─static
+│  │  ├─css
+│  │  │      main.css
+│  │  │      
+│  │  ├─img
+│  │  │      avatar.png
+│  │  │      user.png
+│  │  │      
+│  │  └─js
+│  │          main.js
+│  │          
+│  ├─templates
+│  │      index.html
+│  │      results.html
+│  │      
+│  └─views
+│          index.py
+│          result.py
+│          __init__.py
+│          
+└─__pycache__
+        config.cpython-310.pyc
+        
