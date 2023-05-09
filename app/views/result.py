@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session, g
 import openai
 from config import OPENAI_API_KEY
 
+
 result_bp = Blueprint('result', __name__)
 
 openai.api_key = OPENAI_API_KEY

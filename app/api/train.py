@@ -3,21 +3,22 @@ import json
 import os
 import sys
 
+
 # 获取根目录的路径，并将其添加到sys.path中
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.append(root_path)
 from config import OPENAI_API_KEY
+from app.database import Database
 
 # 设置OpenAI API密钥
 openai.api_key = OPENAI_API_KEY
-
+db = Database()
 # 设置文件路径
-filename = "chat_history.txt"
+filename = "conversation.db"
 
 # 如果文件存在，就读取历史聊天记录
 if os.path.isfile(filename):
-    with open(filename, "r") as f:
-        chat_history = json.load(f)
+    chat_history = db.get_conversation()
 else:
     chat_history = []
 
@@ -31,13 +32,14 @@ message = {
     最后你再提供一份标准的英文翻译事例。'''
 }
 
+
 chat_history.append(message)
 # 与AI聊天
 while True:
     prompt = input("You: ")
     if prompt.lower() == "bye":
         break
-
+    print("\rAI: ....", end="")
     chat_history.append({
         'role': 'user',
         'content': prompt,
@@ -50,8 +52,12 @@ while True:
     )
     response = output.choices[0].message["content"]
     chat_history.append({"role": 'assistant', "content": response})
-    print("AI: " + response)
+    print("\rAI: " + response)
 
     # 保存聊天记录
-    with open('conversation.json', 'w', encoding='utf-8') as f:
-        json.dump(chat_history, f, ensure_ascii=False, indent=4)
+    # with open('conversation.json', 'w', encoding='utf-8') as f:
+    #     json.dump(chat_history, f, ensure_ascii=False, indent=4)
+    
+    for item in chat_history:
+        db.add_conversation(item["role"], item["content"])
+db.close_connection()

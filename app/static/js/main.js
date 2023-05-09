@@ -53,43 +53,6 @@ $(document).ready(function() {
         // message.append(messageContent);
     }
         
-    function add_msg_(role, msg){
-        // 找到聊天框容器
-        var chatContainer = document.querySelector('.chat-container');
-
-        // 创建聊天框，并添加到聊天框容器中
-        var chatBox = document.createElement('div');
-        chatBox.classList.add('chat-box');
-        if(role=='user'){
-            chatBox.classList.add('pull-right');
-        }
-        chatContainer.appendChild(chatBox);
-
-        // 创建头像元素，并添加到聊天框中
-        var avatar = document.createElement('div');
-        avatar.classList.add('avatar');
-        chatBox.appendChild(avatar);
-
-        // 添加头像背景图片
-        if(role =='ai'){
-            avatar.style.backgroundImage = "url('static/img/avatar.png')";
-        }else{
-            avatar.style.backgroundImage = "url('static/img/user.png')";
-        }
-        
-
-        // 创建消息元素，并添加到聊天框中
-        var message_area = document.createElement('div');
-        var message = document.createElement('div');
-        message.classList.add('message');
-        message_area.appendChild(message);
-        chatBox.appendChild(message_area);
-
-        // 添加消息内容
-        var messageContent = document.createElement('p');
-        messageContent.innerText = msg;
-        message.appendChild(messageContent);
-    }
     function send_msg(messageText, status){
         fetch('/send', {
             method: 'POST',
@@ -114,7 +77,6 @@ $(document).ready(function() {
     // 后端返回之后的两种做法
     function start(){
         
-        // 出现“发送”按钮，下方出现textarea
         // $("#btn-send").prop("disabled", false);
         $("#input").prop("disabled", false).focus();
     }
