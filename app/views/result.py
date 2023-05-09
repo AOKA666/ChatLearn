@@ -1,12 +1,12 @@
 from flask import Blueprint, request, jsonify, session, g
 import openai
 from config import OPENAI_API_KEY
-
+from app.database import Database
 
 result_bp = Blueprint('result', __name__)
 
 openai.api_key = OPENAI_API_KEY
-
+db = Database()
 # 记录当前的上下文
 def set_context(response):
     session['current_context']=response
@@ -32,7 +32,7 @@ def process_message():
     context = g.context
     response = ''
 
-    ask = {'role': 'user', 'content': prompt[0]}
+    ask = {'role': 'user', 'content': prompt}
     # 用户消息加入上下文
     context.append(ask)
     messages=context
@@ -51,5 +51,4 @@ def process_message():
     if response:
         messages.append({'role':'assistant', 'content': response})
         # set_context(messages)
-        g.context = messages
     return jsonify({'response': get_paragraphs(response)})

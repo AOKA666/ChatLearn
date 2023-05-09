@@ -41,16 +41,18 @@ $(document).ready(function() {
             // chatBox.append(avatar);
             // 将头像元素添加到消息区域后面，并设置消息区域样式
             avatar.insertAfter(chatBox.find('.message-area'));
-            // chatBox.find('.message-area').addClass('pull-right');
         }
-
-        // 添加消息内容       
+        var p = $('<p>').text(msg);
+        message.append(p);         
+    }
+    // 更新ai的对话框
+    function update_ai_msg(msg){
+        $('.chat-box:last-child p').text("");
+        var div = $(".chat-box:last-child .message");
         for (var i = 0; i < msg.length; i++) {
             var p = $('<p>').text(msg[i]);
-            message.append(p);
-        }        
-        // var messageContent = $('<p>').text(msg);
-        // message.append(messageContent);
+            div.append(p);
+        }  
     }
         
     function send_msg(messageText, status){
@@ -65,7 +67,7 @@ $(document).ready(function() {
         .then(data => {
             // 更新页面上的 message-area 元素
             console.log(data.response);
-            add_msg('ai', data.response)
+            update_ai_msg(data.response)
             if(status=='start'){
                 start();
             }else{
@@ -94,14 +96,17 @@ $(document).ready(function() {
         // 获取用户输入的消息文本并清空输入框
         var messageText;
         if($("#btn-send").is(":disabled")){
-            messageText = ['开始练习'];
+            messageText = '开始练习';
             add_msg('user', messageText);
+            add_msg('ai', '请稍候...');
             // 禁用“开始练习”按钮
             $("#btn-start").prop("disabled", true);            
             send_msg(messageText, 'start');
         }else{
             messageText = $("#input").val();
-            add_msg('user', [messageText]);
+            add_msg('user', messageText);
+            $("#input").prop("disabled", true);
+            add_msg('ai', '请稍候...');
             $("#btn-send").prop("disabled", true);
             $("#input").val("");
             send_msg(messageText, 'over');
