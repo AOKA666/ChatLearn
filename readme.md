@@ -17,7 +17,7 @@
 
 - 最好不要问乱七八糟的问题，以免训练数据出现bug
 
-- 如果你想继续训练模型，打开`/app/api/train.py`，单独运行这个脚本，然后输入“开始练习”。对话的内容都会存放在`conversation.json`中，有需要也可以自行修改。
+- 如果你想继续训练模型，打开`/app/api/train.py`，单独运行这个脚本，然后输入“开始练习”。对话的内容都会存放在`conversation.db`中，有需要也可以自行修改。
 
   ![训练界面](https://gitee.com/AOKA666/image-repository/raw/master/images/%E8%AE%AD%E7%BB%83%E7%95%8C%E9%9D%A2.png)
 
